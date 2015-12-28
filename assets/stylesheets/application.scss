@@ -3,6 +3,11 @@
 #map {
   width:100%;
   height: 85vh;
+
+  .directions-control-directions-container {
+    display: none !important;
+  }
+
 }
 
 h1, h2 {
@@ -10,45 +15,46 @@ h1, h2 {
 }
 
 h2 {
-  margin-left: 20px; 
+  margin-left: 20px;
 }
 
 .venues {
   overflow-y: scroll;
   height: 85vh;
   border: 1px solid #ccc;
-}
 
-.address, .categories {
-  font-size: .9em;
-}
+  .venue {
+    .address, .categories {
+      font-size: .9em;
+    }
 
-.rating {
-  text-align: center;
-  color: #fff;
-  height: 30px;
-  width: 30px;
-  font-weight: bold;
-  border-radius: 25px;
-  padding-top: 5px;
-  margin-top: 2.5px;
-}
+    .rating {
+      text-align: center;
+      color: #fff;
+      height: 30px;
+      width: 30px;
+      font-weight: bold;
+      border-radius: 25px;
+      padding-top: 5px;
+      margin-top: 2.5px;
+    }
 
-.meta {
-  padding-left: 25px;
-}
+    .meta {
+      padding-left: 25px;
+    }
 
-.hours {
-  font-style: italic;
-  margin-top: 10px;
-}
+    .hours {
+      font-style: italic;
+      margin-top: 10px;
+    }
 
-.directions-control-directions-container {
-  display: none !important;
-}
-
-.time .minutes {
-  font-weight: bold;
+    .times {
+      cursor: pointer;
+      .time .minutes {
+        font-weight: bold;
+      }
+    }
+  }
 }
 
 .index {
