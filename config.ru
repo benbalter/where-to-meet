@@ -3,6 +3,7 @@ $LOAD_PATH << File.expand_path(File.dirname(__FILE__))
 require 'rubygems'
 require 'bundler'
 require 'json'
+require 'digest'
 Bundler.require(:default)
 
 Dotenv.load
@@ -13,4 +14,6 @@ Geokit::Geocoders::provider_order =  [:mapbox, :google]
 Mapbox.access_token = ENV["MAPBOX_ACCESS_TOKEN"]
 
 require 'where_to_meet'
+require './lib/geokit/lat_lng'
+
 run WhereToMeet

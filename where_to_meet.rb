@@ -26,11 +26,26 @@ class WhereToMeet < Sinatra::Base
     :section,
     :foursquare
   ]
+  MEMCACHE_OPTIONS = {
+    :namespace  => "where_to_meet",
+    :compress   => true,
+    :expires_in => 60 * 60, # 1 HR cache
+    :username => ENV["MEMCACHIER_USERNAME"],
+    :password => ENV["MEMCACHIER_PASSWORD"],
+    :failover => true,
+    :socket_timeout => 1.5,
+    :socket_failure_delay => 0.2
+  }
 
   def logger
     Logger.new(STDOUT)
   end
   memoize :logger
+
+  def cache
+    Dalli::Client.new((ENV["MEMCACHIER_SERVERS"] || "localhost:11211").split(","), MEMCACHE_OPTIONS)
+  end
+  memoize :cache
 
   def foursquare_client
     Foursquare2::Client.new({
@@ -52,9 +67,13 @@ class WhereToMeet < Sinatra::Base
   memoize :oauth_client
 
   def geocode(address)
-    Geokit::Geocoders::MultiGeocoder.geocode(address)
+    cache_key = "geocode:#{address}"
+    unless response = cache.get(cache_key)
+      response = Geokit::Geocoders::MultiGeocoder.geocode(address)
+      cache.set(cache_key, response)
+    end
+    response
   end
-  memoize :geocode
 
   def you
     geocode params["your_location"]
@@ -70,13 +89,18 @@ class WhereToMeet < Sinatra::Base
   end
 
   def query(midpoint, section)
-    foursquare_client.explore_venues({
-      ll: midpoint,
-      section: section,
-      limit: 10
-    })
+    parts = [midpoint, section, session[:oauth_token]].compact.join(":")
+    cache_key = "foursquare:" + Digest::MD5.hexdigest(parts)
+    unless response = cache.get(cache_key)
+      response = foursquare_client.explore_venues({
+        ll: midpoint,
+        section: section,
+        limit: 10
+      })
+      cache.set(cache_key, response)
+    end
+    response
   end
-  memoize :query
 
   def venues
     response = query(midpoint, params["section"])
@@ -141,6 +165,12 @@ class WhereToMeet < Sinatra::Base
         friend
       end
 
+      parts = [from_parts.lat,from_parts.lng,to["lat"],to["lng"]].join(":")
+      cache_key = "time_to:" + Digest::MD5.hexdigest(parts)
+
+      cached = cache.get cache_key
+      return cached if cached
+
       profile = params["#{from}_profile"]
 
       response = Mapbox::Directions.directions([{
@@ -151,7 +181,11 @@ class WhereToMeet < Sinatra::Base
         "longitude" => to["lng"]
       }], "mapbox.#{profile}").first
 
-      response["routes"].first["duration"] unless response["routes"].empty?
+      return if response["routes"].empty?
+      time = response["routes"].first["duration"]
+      cache.set cache_key, time
+
+      time
     end
     memoize :time_to
 
@@ -188,7 +222,6 @@ class WhereToMeet < Sinatra::Base
   end
 
   get "/venues" do
-
     if params["foursquare"] == "on" && session[:oauth_token].nil?
       PARAMS.each { |param| session[param] = params[param.to_s] }
       halt redirect oauth_client.auth_code.authorize_url(:redirect_uri => callback_url)

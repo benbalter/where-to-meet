@@ -20,6 +20,7 @@ gem 'oauth2'
 gem 'addressable', require: 'addressable/uri'
 gem 'bootstrap-sass', require: 'bootstrap-sass'
 gem 'rack-ssl-enforcer'
+gem 'dalli'
 
 group :development do
   gem 'pry'

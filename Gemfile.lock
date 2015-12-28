@@ -13,6 +13,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
+    dalli (2.7.5)
     domain_name (0.5.25)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.0.2)
@@ -112,6 +113,7 @@ DEPENDENCIES
   addressable
   bootstrap-sass
   coffee-script
+  dalli
   dotenv
   foursquare2
   geokit
