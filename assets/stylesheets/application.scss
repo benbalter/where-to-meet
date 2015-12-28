@@ -1,0 +1,80 @@
+//@import 'vendor/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+@import 'bootstrap';
+
+#map {
+  width:100%;
+  height: 85vh;
+}
+
+.venues {
+  overflow-y: scroll;
+  height: 85vh;
+  border: 1px solid #ccc;
+}
+
+.address, .categories {
+  font-size: .9em;
+}
+
+.rating {
+  text-align: center;
+  color: #fff;
+  height: 30px;
+  width: 30px;
+  font-weight: bold;
+  border-radius: 25px;
+  padding-top: 5px;
+  margin-top: 2.5px;
+}
+
+.meta {
+  padding-left: 25px;
+}
+
+.hours {
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.directions-control-directions-container {
+  display: none !important;
+}
+
+.time .minutes {
+  font-weight: bold;
+}
+
+.index {
+  width: 100%;
+  height: 200px;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-size: 1.5em;
+
+  .form-group {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  input[type=text] {
+    width: 40%;
+  }
+  .use-foursquare {
+    font-size: .6em;
+    font-style: italic;
+    font-weight: lighter;
+
+    label {
+      padding-top: 5px;
+      font-weight: normal;
+    }
+
+    input[type=checkbox] {
+      height: .6em;
+      margin-left: -15px;
+    }
+  }
+}

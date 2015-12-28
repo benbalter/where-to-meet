@@ -1,0 +1,57 @@
+mapboxgl.accessToken = <%= ENV["MAPBOX_ACCESS_TOKEN"].to_json %>;
+
+$(document).on 'ready page:load', ->
+
+  $map = $("#map")
+
+  options = {
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v8',
+    zoom: 15
+    #interactive: false,
+    center: $map.data("midpoint").split(",")
+  }
+
+  map = new mapboxgl.Map(options)
+  source = new mapboxgl.GeoJSONSource({
+    data: $map.data("geojson-url")
+  })
+
+  directions = new mapboxgl.Directions()
+  map.addControl(directions)
+  window.directions = directions
+
+  map.on 'style.load', ->
+
+    map.addSource('marker', source)
+    map.addLayer({
+      "id": "marker",
+      "type": "symbol",
+      "source": "marker",
+      "layout": {
+        "icon-image": "{marker-symbol}-15",
+        "text-field": "{name}",
+        "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+        "text-offset": [0, 0.6],
+        "text-anchor": "top"
+      },
+      "paint": {
+        "text-size": 10
+      }
+    })
+
+    if $map.data("min-x") and $map.data("min-y")
+      sw = new mapboxgl.LngLat($map.data("min-x"), $map.data("min-y"))
+      ne = new mapboxgl.LngLat($map.data("max-x"), $map.data("max-y"))
+      llb = new mapboxgl.LngLatBounds(sw, ne)
+      map.fitBounds(llb, { padding: 50, speed: 10, curve: 1})
+
+    $(".you_time").mouseover ->
+      directions.setOrigin $map.data("you-address")
+      directions.setDestination $(this).parent().data("address")
+      $("#mapbox-directions-profile-#{$(this).data("profile")}").click()
+
+    $(".friend_time").mouseover ->
+      directions.setOrigin $map.data("friend-address")
+      directions.setDestination $(this).parent().data("address")
+      $("#mapbox-directions-profile-#{$(this).data("profile")}").click()

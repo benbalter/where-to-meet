@@ -1,0 +1,50 @@
+<div class="index">
+  <form class="form-inline" action="venues" method="get">
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="form-group">
+          I'm at <input type="text" name="your_location" class="form-control" />
+          and I'll be <%= profile_dropdown :you %>.
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="form-group">
+          My buddy's at <input type="text" name="friend_location" class="form-control"/>
+          and they'll be <%= profile_dropdown :friend %>.
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="form-group">
+          We're looking for a place to grab a
+          <select name="section" class="form-control">
+            <option value="drinks">drink</option>
+            <option value="coffee">cup of coffee</option>
+            <option value="food">bite to eat</option>
+          </select>.
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="form-group">
+          <input type="submit" value="Where should we meet?" class="btn btn-primary" />
+
+          <div class="checkbox-inline use-foursquare">
+            <label>
+              <input type="checkbox" checked="checked" name="foursquare" class="form-control">
+              Oh, and please use Foursquare to customize the results.
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
