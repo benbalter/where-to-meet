@@ -19,6 +19,7 @@ gem 'uglifier'
 gem 'oauth2'
 gem 'addressable', require: 'addressable/uri'
 gem 'bootstrap-sass', require: 'bootstrap-sass'
+gem 'rack-ssl-enforcer'
 
 group :development do
   gem 'pry'

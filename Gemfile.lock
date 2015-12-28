@@ -59,6 +59,7 @@ GEM
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
+    rack-ssl-enforcer (0.2.9)
     rake (10.4.2)
     rb-fsevent (0.9.6)
     rb-inotify (0.9.5)
@@ -118,6 +119,7 @@ DEPENDENCIES
   memoist
   oauth2
   pry
+  rack-ssl-enforcer
   rerun
   rgeo
   rgeo-geojson
