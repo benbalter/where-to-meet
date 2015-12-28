@@ -169,7 +169,7 @@ class WhereToMeet < Sinatra::Base
       cache_key = "time_to:" + Digest::MD5.hexdigest(parts)
 
       cached = cache.get cache_key
-      return cached if cached
+      return cached.to_i if cached
 
       profile = params["#{from}_profile"]
 
@@ -183,7 +183,7 @@ class WhereToMeet < Sinatra::Base
 
       return if response["routes"].empty?
       time = response["routes"].first["duration"]
-      cache.set cache_key, time
+      cache.set cache_key, time.to_i
 
       time
     end
