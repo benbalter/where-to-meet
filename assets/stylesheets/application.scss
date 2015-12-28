@@ -5,6 +5,14 @@
   height: 85vh;
 }
 
+h1, h2 {
+  display: inline-block;
+}
+
+h2 {
+  margin-left: 20px; 
+}
+
 .venues {
   overflow-y: scroll;
   height: 85vh;

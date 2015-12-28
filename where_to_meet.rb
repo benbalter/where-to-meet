@@ -11,7 +11,7 @@ class WhereToMeet < Sinatra::Base
     :http_only => true,
     :secret    => ENV['SESSION_SECRET'] || SecureRandom.hex
   }
-  
+
   configure :production do
      require 'rack-ssl-enforcer'
      use Rack::SslEnforcer
